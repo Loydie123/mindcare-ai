@@ -117,22 +117,30 @@ $facebook_pages = $conn->query("SELECT * FROM facebook_pages");
 
     <style>
         :root {
-            --brand-primary: #0d6efd;
-            --brand-danger: #dc3545;
-            --card-radius: 14px;
-            --soft-bg: #f7f9fc;
+            --brand-primary: #6C63FF;
+            --brand-danger: #FF6B6B;
+            --card-radius: 16px;
+            --soft-bg: #F8FAFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
         }
 
         body {
             background: var(--soft-bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
         }
 
         .app-toolbar {
-            background: #ffffff;
-            border-bottom: 1px solid #e9ecef;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(231, 234, 240, 0.7);
             position: sticky;
             top: 0;
             z-index: 1020;
+            padding: 1rem 0;
+            transition: var(--transition);
         }
 
         .page-title {
@@ -141,27 +149,41 @@ $facebook_pages = $conn->query("SELECT * FROM facebook_pages");
         }
 
         .card {
-            border: 1px solid #e7eaf0;
+            border: 1px solid rgba(231, 234, 240, 0.7);
             border-radius: var(--card-radius);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
 
         .card-header {
             border-bottom: none;
             border-top-left-radius: var(--card-radius);
             border-top-right-radius: var(--card-radius);
-            padding: 1rem 1.25rem;
+            padding: 1.25rem;
+            background: transparent;
         }
 
         .card-header.emergency {
-            background: linear-gradient(135deg, rgba(220,53,69,.12), rgba(220,53,69,.08));
-            color: #b02a37;
-            border-bottom: 1px solid rgba(220,53,69,.2);
+            background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(255,107,107,0.05));
+            color: var(--brand-danger);
+            border-bottom: 1px solid rgba(255,107,107,0.2);
         }
 
         .card-header.facebook {
-            background: linear-gradient(135deg, rgba(13,110,253,.12), rgba(13,110,253,.08));
-            color: #0a58ca;
-            border-bottom: 1px solid rgba(13,110,253,.2);
+            background: linear-gradient(135deg, rgba(108,99,255,0.1), rgba(108,99,255,0.05));
+            color: var(--brand-primary);
+            border-bottom: 1px solid rgba(108,99,255,0.2);
+        }
+
+        .card-body {
+            padding: 1.5rem;
         }
 
         .subtle {
@@ -169,23 +191,71 @@ $facebook_pages = $conn->query("SELECT * FROM facebook_pages");
             font-size: .925rem;
         }
 
+        .table {
+            --bs-table-hover-bg: rgba(108,99,255,0.02);
+        }
+
         .table > :not(caption) > * > * {
             vertical-align: middle;
+            padding: 1rem;
+            border-bottom-color: rgba(108,99,255,0.1);
+        }
+
+        .table > thead > tr > th {
+            background: rgba(108,99,255,0.03);
+            color: var(--brand-primary);
+            font-weight: 600;
+            border-bottom: none;
         }
 
         .avatar {
             width: 42px;
             height: 42px;
             object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
-            background: #fff;
+            border-radius: 12px;
+            border: 2px solid rgba(108,99,255,0.1);
+            background: white;
+            transition: var(--transition);
+        }
+
+        .avatar:hover {
+            transform: scale(1.1);
+            border-color: var(--brand-primary);
         }
 
         .empty-state {
             text-align: center;
             color: #6c757d;
-            padding: 2rem .5rem;
+            padding: 3rem 1rem;
+            background: rgba(108,99,255,0.02);
+            border-radius: 16px;
+            border: 1px dashed rgba(108,99,255,0.2);
+        }
+
+        .badge {
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(108,99,255,0.1);
+            padding: 1.25rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(108,99,255,0.1);
+            padding: 1.25rem;
         }
 
         .input-hint {
@@ -194,36 +264,112 @@ $facebook_pages = $conn->query("SELECT * FROM facebook_pages");
         }
 
         .input-icon {
-            width: 44px;
+            width: 48px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: #f1f3f5;
-            border: 1px solid #e9ecef;
+            background: rgba(108,99,255,0.05);
+            border: 1px solid rgba(108,99,255,0.2);
             border-right: 0;
-            border-top-left-radius: .5rem;
-            border-bottom-left-radius: .5rem;
-            color: #6c757d;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            color: var(--brand-primary);
+            transition: var(--transition);
+        }
+
+        .input-with-icon:focus-within .input-icon {
+            background: rgba(108,99,255,0.1);
+            color: var(--brand-primary);
         }
 
         .input-with-icon .form-control {
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            border-color: rgba(108,99,255,0.2);
+            transition: var(--transition);
+        }
+
+        .input-with-icon .form-control:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 4px rgba(108,99,255,0.1);
         }
 
         .form-divider {
-            border-top: 1px dashed #e5e7eb;
-            margin: .75rem 0 1rem 0;
+            border-top: 1px dashed rgba(108,99,255,0.2);
+            margin: 1.5rem 0;
         }
 
         .filter-input {
             max-width: 360px;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            border-color: rgba(108,99,255,0.2);
+            background: rgba(255,255,255,0.9);
+            transition: var(--transition);
+        }
+
+        .filter-input:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 4px rgba(108,99,255,0.1);
+        }
+
+        .btn {
+            border-radius: 12px;
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            transition: var(--transition);
         }
 
         .btn-icon {
             display: inline-flex;
             align-items: center;
-            gap: .35rem;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+        }
+
+        .btn-primary:hover {
+            background: #5B52FF;
+            border-color: #5B52FF;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: var(--brand-danger);
+            border-color: var(--brand-danger);
+        }
+
+        .btn-danger:hover {
+            background: #FF5252;
+            border-color: #FF5252;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-warning {
+            color: #F59E0B;
+            border-color: #F59E0B;
+        }
+
+        .btn-outline-warning:hover {
+            background: #F59E0B;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-danger {
+            color: var(--brand-danger);
+            border-color: var(--brand-danger);
+        }
+
+        .btn-outline-danger:hover {
+            background: var(--brand-danger);
+            color: white;
+            transform: translateY(-1px);
         }
 
         .file-preview {
