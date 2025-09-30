@@ -48,7 +48,7 @@ function detect_language($text) {
 }
 $lang = detect_language($userPrompt);
 
-$secretKey = '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';
+$secretKey = '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';
 $endpoint = 'https://openrouter.ai/api/v1/chat/completions';
 
 $messages = [
