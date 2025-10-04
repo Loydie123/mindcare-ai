@@ -827,6 +827,126 @@ $facebookPages = $conn->query("SELECT * FROM facebook_pages");
       overflow: hidden; 
     }
 
+    /* Subscription Modal Styles */
+    .subscription-modal {
+      max-width: 900px !important;
+    }
+    .subscription-plans {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .plan-card {
+      flex: 1;
+      min-width: 280px;
+      max-width: 400px;
+      background: linear-gradient(135deg, #fff 0%, #f8faff 100%);
+      border-radius: 20px;
+      padding: 30px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .plan-card.pro {
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: white;
+    }
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: #ef4444;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+    .plan-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .plan-header h3 {
+      font-size: 1.8em;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    .price {
+      font-size: 2.5em;
+      font-weight: 800;
+      color: #2563eb;
+    }
+    .pro .price {
+      color: white;
+    }
+    .price span {
+      font-size: 0.4em;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 25px;
+    }
+    .plan-features li {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95em;
+    }
+    .plan-features i {
+      color: #22c55e;
+      font-size: 1.2em;
+    }
+    .pro .plan-features i {
+      color: white;
+    }
+    .btn-subscribe {
+      width: 100%;
+      padding: 12px !important;
+      border-radius: 12px !important;
+      font-weight: 600 !important;
+      font-size: 1em !important;
+    }
+    .basic-btn {
+      background: #2563eb !important;
+      color: white !important;
+    }
+    .pro-btn {
+      background: white !important;
+      color: #2563eb !important;
+    }
+    
+    /* Dark mode subscription styles */
+    body.dark-mode .plan-card {
+      background: linear-gradient(135deg, #1e293b 0%, #1a1f2d 100%);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    body.dark-mode .plan-card.pro {
+      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    }
+    body.dark-mode .price {
+      color: #60a5fa;
+    }
+    body.dark-mode .plan-features i {
+      color: #4ade80;
+    }
+    body.dark-mode .basic-btn {
+      background: #3b82f6 !important;
+    }
+    body.dark-mode .pro-btn {
+      background: #f8faff !important;
+    }
+
     /* Dark Mode Styles */
     body.dark-mode {
       background: #0f172a;
@@ -1049,7 +1169,7 @@ $facebookPages = $conn->query("SELECT * FROM facebook_pages");
   <div class="initials" title="<?= htmlspecialchars($name) ?>"><?= $initials ?></div>
   <ul class="nav-links">
     <li><a href="#" class="active"><i class="bi bi-house"></i> <span class="sidebar-text">Dashboard</span></a></li>
-    <li><a href="../chatbot/index.php"><i class="bi bi-chat-dots"></i> <span class="sidebar-text">Chatbot</span></a></li>
+    <li><a href="#" onclick="showSubscriptionModal(); return false;"><i class="bi bi-chat-dots"></i> <span class="sidebar-text">Chatbot</span></a></li>
     <li><a href="../journal/journal.php"><i class="bi bi-journal-text"></i> <span class="sidebar-text">Journal</span></a></li>
     <li><a href="../resources/resources.php"><i class="bi bi-lightbulb"></i> <span class="sidebar-text">Resources</span></a></li>
     <li><a href="../moodtracker/emotional_analysis.php"><i class="bi bi-activity"></i> <span class="sidebar-text">Emotional Analysis</span></a></li>
@@ -1072,7 +1192,47 @@ $facebookPages = $conn->query("SELECT * FROM facebook_pages");
       <div class="card-body">
         <h5 class="card-title"><i class="bi bi-chat-dots"></i> Chat with Aura</h5>
         <p class="card-text">Your AI mental health assistant</p>
-        <a href="../chatbot/index.php" class="btn">Start Chat</a>
+        <button onclick="showSubscriptionModal()" class="btn">Start Chat</button>
+      </div>
+    </div>
+
+    <!-- Subscription Modal -->
+    <div id="subscriptionModal" class="modal-overlay">
+      <div class="modal-content subscription-modal">
+        <span class="close-btn" onclick="closeSubscriptionModal()">&times;</span>
+        <h2><i class="bi bi-stars"></i> Choose Your Plan</h2>
+        <div class="subscription-plans">
+          <div class="plan-card basic">
+            <div class="plan-header">
+              <h3>Basic Plan</h3>
+              <div class="price">₱100<span>/month</span></div>
+            </div>
+            <ul class="plan-features">
+              <li><i class="bi bi-check-circle"></i> Basic AI Chat Support</li>
+              <li><i class="bi bi-check-circle"></i> Limited to 50 messages/day</li>
+              <li><i class="bi bi-check-circle"></i> Basic Mental Health Resources</li>
+              <li><i class="bi bi-check-circle"></i> Journal Features</li>
+            </ul>
+            <button class="btn btn-subscribe basic-btn" onclick="subscribePlan('basic')">Subscribe Now</button>
+          </div>
+          
+          <div class="plan-card pro">
+            <div class="popular-badge">Most Popular</div>
+            <div class="plan-header">
+              <h3>Pro Plan</h3>
+              <div class="price">₱150<span>/month</span></div>
+            </div>
+            <ul class="plan-features">
+              <li><i class="bi bi-check-circle"></i> Advanced AI Chat Support</li>
+              <li><i class="bi bi-check-circle"></i> Unlimited Messages</li>
+              <li><i class="bi bi-check-circle"></i> Premium Mental Health Resources</li>
+              <li><i class="bi bi-check-circle"></i> Priority Support</li>
+              <li><i class="bi bi-check-circle"></i> Advanced Analytics</li>
+              <li><i class="bi bi-check-circle"></i> All Basic Features</li>
+            </ul>
+            <button class="btn btn-subscribe pro-btn" onclick="subscribePlan('pro')">Subscribe Now</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="card journal-card">
@@ -1215,6 +1375,38 @@ document.getElementById('logoutLink').addEventListener('click', async (e) => {
   if (window.stopCamera) await window.stopCamera();
   sessionStorage.removeItem('mc_session_start');
   window.location.href = href;
+});
+
+// Subscription Modal Functions
+function showSubscriptionModal() {
+  document.getElementById('subscriptionModal').style.display = 'block';
+  document.body.classList.add('no-scroll');
+}
+
+function closeSubscriptionModal() {
+  document.getElementById('subscriptionModal').style.display = 'none';
+  document.body.classList.remove('no-scroll');
+}
+
+function subscribePlan(plan) {
+  // Here we'll add PayMongo integration later
+  alert('Payment integration coming soon! Selected plan: ' + plan);
+}
+
+// Initialize subscription modal events
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('subscriptionModal');
+  const closeBtn = modal.querySelector('.close-btn');
+  
+  // Close on X button click
+  closeBtn.addEventListener('click', closeSubscriptionModal);
+  
+  // Close on clicking outside the modal
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      closeSubscriptionModal();
+    }
+  });
 });
 
 // ✅ Inject the floating widget (face-api.js version)
